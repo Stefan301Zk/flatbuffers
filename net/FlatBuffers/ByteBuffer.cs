@@ -245,10 +245,12 @@ namespace Google.FlatBuffers
 #endif
 
         // Get a portion of the buffer casted into an array of type T, given
-        // the buffer position (in bytes) and length (in bytes).
-        public T[] ToArray<T>(int posInBytes, int lenInBytes)
+        // the buffer position (in bytes) and length (in number of Ts).
+        public T[] ToArray<T>(int posInBytes, int lenInNumberOfTs)
             where T : struct
         {
+            int lenInBytes = lenInNumberOfTs * SizeOf<T>();
+
             AssertOffsetAndLength(posInBytes, lenInBytes);
 #if ENABLE_SPAN_T && UNSAFE_BYTEBUFFER
             return MemoryMarshal.Cast<byte, T>(_buffer.ReadOnlySpan.Slice(posInBytes, lenInBytes)).ToArray();

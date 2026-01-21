@@ -374,21 +374,21 @@ namespace Google.FlatBuffers.Test
             var uut = new ByteBuffer(buffer);
 
             // Get the full array back out and ensure they are equivalent
-            var bbArray = uut.ToArray<float>(0, sizeInBytes);
+            var bbArray = uut.ToArray<float>(0, fData.Length);
             Assert.ArrayEqual(fData, bbArray);
 
             // Get a portion of the full array back out and ensure the
             // subrange agrees
             var posInFloats = 4;
             var lenInFloats = Math.Min(fData.Length - posInFloats - 1, 4);
-            var bbArray2 = uut.ToArray<float>(ByteBuffer.ConvertTsToBytes<float>(posInFloats), ByteBuffer.ConvertTsToBytes<float>(lenInFloats));
+            var bbArray2 = uut.ToArray<float>(ByteBuffer.ConvertTsToBytes<float>(posInFloats), lenInFloats);
             Assert.ArrayEqual(fData.Skip(posInFloats).Take(bbArray2.Length).ToArray(), bbArray2);
 
             // Get a sub portion of the full array back out and ensure the
             // subrange agrees
             posInFloats = 6;
             lenInFloats = Math.Min(fData.Length - posInFloats - 1, 1);
-            var bbArray3 = uut.ToArray<float>(ByteBuffer.ConvertTsToBytes<float>(posInFloats), ByteBuffer.ConvertTsToBytes<float>(lenInFloats));
+            var bbArray3 = uut.ToArray<float>(ByteBuffer.ConvertTsToBytes<float>(posInFloats), lenInFloats);
             Assert.ArrayEqual(fData.Skip(posInFloats).Take(bbArray3.Length).ToArray(), bbArray3);
         }
 
@@ -404,7 +404,7 @@ namespace Google.FlatBuffers.Test
             Assert.AreEqual(1024 - typeSize * data.Length, nOffset);
 
             // Get the full array back out and ensure they are equivalent
-            var bbArray = uut.ToArray<T>(nOffset, ByteBuffer.ConvertTsToBytes<T>(data.Length));
+            var bbArray = uut.ToArray<T>(nOffset, data.Length);
             Assert.ArrayEqual(data, bbArray);
         }
 
@@ -420,7 +420,7 @@ namespace Google.FlatBuffers.Test
             Assert.AreEqual(1024 - typeSize * data.Count, nOffset);
       
             // Get the full array back out and ensure they are equivalent
-            var bbArray = uut.ToArray<T>(nOffset, ByteBuffer.ConvertTsToBytes<T>(data.Count));
+            var bbArray = uut.ToArray<T>(nOffset, data.Count);
             Assert.ArrayEqual(data, bbArray);
         }
     
@@ -442,7 +442,7 @@ namespace Google.FlatBuffers.Test
                 Assert.AreEqual(1024 - sizeInBytes, nOffset);
 
                 // Get the full array back out and ensure they are equivalent
-                var bbArray = uut.ToArray<T>(nOffset, ByteBuffer.ConvertTsToBytes<T>(data.Length));
+                var bbArray = uut.ToArray<T>(nOffset, data.Length);
                 Assert.ArrayEqual(data, bbArray);
             }
             finally
